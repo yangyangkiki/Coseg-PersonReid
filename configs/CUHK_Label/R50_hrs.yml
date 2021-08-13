@@ -1,0 +1,41 @@
+_BASE_: "../Base-Strongerbaseline.yml"
+
+DATASETS:
+  NAMES: ("CUHK03",)
+  TESTS: ("CUHK03",)
+  ROOT_DIR: "/home/cviplab/Project/ReID-Kiki/Datasets"
+  CUHKLABELED: True
+
+
+MODEL:
+  BACKBONE:
+    PRETRAIN_PATH: "/home/cviplab/Project/ReID-Kiki/pretrained_models/resnet50-19c8e357.pth"
+
+  HEADS:
+    NAME: "InterpratableHead"
+
+  LOSSES:
+    NAME: ("CrossEntropyLoss", "TripletLoss", "NonlapLoss", )
+    SL:
+      RADIUS: 2
+      STD: 0.2
+      ALPHA: 1
+      BETA: 0.001
+      SCALE: 0.5
+
+INPUT:
+  SIZE_TRAIN: [384, 192]  
+  SIZE_TEST: [384, 192]
+
+SOLVER:
+  MAX_ITER: 210 
+  STEPS: [30, 55, 75]
+
+INTERPRATABLE:
+  NPARTS: 5
+  PART_DIM: 256
+
+TEST:
+  IMS_PER_BATCH: 64
+
+OUTPUT_DIR: "results_kiki/cuhk/label/R50_hrs"
